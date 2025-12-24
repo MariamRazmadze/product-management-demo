@@ -1,11 +1,12 @@
+import { useSnapshot } from "valtio";
 import { useNavigate } from "@tanstack/react-router";
-import { useCart } from "../../hooks/useCart";
+import { CartStore } from "../../stores/cartStore";
 import { ShoppingCartIcon } from "../icons/NavbarIcons";
 
 export default function CartIcon() {
   const navigate = useNavigate();
-  const { getTotalItems } = useCart();
-  const itemCount = getTotalItems();
+  const { cart } = useSnapshot(CartStore);
+  const itemCount = cart?.totalQuantity || 0;
 
   return (
     <button

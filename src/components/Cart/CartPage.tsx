@@ -1,4 +1,6 @@
+import { useSnapshot } from "valtio";
 import { useCart } from "../../hooks/useCart";
+import { CartStore, CartActions } from "../../stores/cartStore";
 import CartItem from "./CartItem";
 import EmptyState from "../ui/EmptyState";
 import LoadingSpinner from "../ui/LoadingSpinner";
@@ -6,11 +8,11 @@ import AlertMessage from "../ui/AlertMessage";
 import { useTranslation } from "../../hooks/useTranslation";
 import { ShoppingCartIcon } from "../icons/NavbarIcons";
 import { useEffect } from "react";
-import { CartActions } from "../../stores/cartStore";
 
 export default function CartPage() {
   const { t } = useTranslation();
-  const { cart, isLoading, clearCart, message, error } = useCart();
+  const { clearCart } = useCart();
+  const { cart, isLoading, message, error } = useSnapshot(CartStore);
 
   useEffect(() => {
     return () => {

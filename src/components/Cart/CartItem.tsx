@@ -1,4 +1,6 @@
+import { useSnapshot } from "valtio";
 import { useCart } from "../../hooks/useCart";
+import { CartStore } from "../../stores/cartStore";
 import type { CartProduct } from "../../stores/types/cart";
 import { useTranslation } from "../../hooks/useTranslation";
 
@@ -8,7 +10,8 @@ type CartItemProps = {
 
 export default function CartItem({ product }: CartItemProps) {
   const { t } = useTranslation();
-  const { updateQuantity, removeFromCart, isLoading } = useCart();
+  const { updateQuantity, removeFromCart } = useCart();
+  const { isLoading } = useSnapshot(CartStore);
 
   return (
     <div

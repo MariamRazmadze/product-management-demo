@@ -1,4 +1,3 @@
-import { useSnapshot } from "valtio";
 import { AuthActions, AuthStore } from "../stores/authStore";
 import { useApi } from "./useApi";
 import { saveToken, removeToken } from "../utils/storage";
@@ -7,7 +6,6 @@ import { handleAsync } from "../utils/asyncHandler";
 import { mapToUser } from "../utils/userMapper";
 
 export const useAuth = () => {
-  const authState = useSnapshot(AuthStore);
   const api = useApi();
 
   const login = async (username: string, password: string) => {
@@ -43,7 +41,7 @@ export const useAuth = () => {
   };
 
   const getCurrentUser = async () => {
-    if (!authState.user?.accessToken) {
+    if (!AuthStore.user?.accessToken) {
       return null;
     }
 
@@ -62,16 +60,16 @@ export const useAuth = () => {
     email: string;
     username: string;
   }) => {
-    if (!authState.user) return false;
+    if (!AuthStore.user) return false;
 
     const result = await handleAsync(
       async () => {
         const updatedUser = await api.put<User>(
-          `/users/${authState.user!.id}`,
+          `/users/${AuthStore.user!.id}`,
           profileData
         );
         const user: User = {
-          ...authState.user!,
+          ...AuthStore.user!,
           firstName: updatedUser.firstName || profileData.firstName,
           lastName: updatedUser.lastName || profileData.lastName,
           email: updatedUser.email || profileData.email,
@@ -97,8 +95,5 @@ export const useAuth = () => {
     logout,
     getCurrentUser,
     updateProfile,
-    user: authState.user,
-    isAuthenticated: authState.isAuthenticated,
-    authStatus: authState.authStatus,
   };
 };

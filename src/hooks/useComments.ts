@@ -1,14 +1,10 @@
-import { useSnapshot } from "valtio";
-import { CommentStore, CommentActions } from "../stores/commentStore";
+import { CommentActions } from "../stores/commentStore";
 import type { ProductComment, CommentsResponse } from "../stores/types/comment";
 import { useApi } from "./useApi";
 import { handleAsync } from "../utils/asyncHandler";
 import { AuthStore } from "../stores/authStore";
 
 export const useComments = (productId: number) => {
-  const commentState = useSnapshot(CommentStore);
-  const { user } = useSnapshot(AuthStore);
-  const comments = commentState.comments[productId] || [];
   const api = useApi();
 
   const fetchComments = async () => {
@@ -37,7 +33,7 @@ export const useComments = (productId: number) => {
         const response = await api.post<ProductComment>("/comments/add", {
           body: text,
           postId: productId,
-          userId: user?.id || 1,
+          userId: AuthStore.user?.id || 1,
         });
         const newComment: ProductComment = {
           id: response.id,
@@ -45,9 +41,9 @@ export const useComments = (productId: number) => {
           postId: productId,
           likes: 0,
           user: {
-            id: user?.id || 1,
-            username: user?.username || "Guest",
-            fullName: `${user?.firstName || "Guest"} ${user?.lastName || "User"}`,
+            id: AuthStore.user?.id || 1,
+            username: AuthStore.user?.username || "Guest",
+            fullName: `${AuthStore.user?.firstName || "Guest"} ${AuthStore.user?.lastName || "User"}`,
           },
         };
 
@@ -66,10 +62,6 @@ export const useComments = (productId: number) => {
   };
 
   return {
-    comments,
-    isLoading: commentState.isLoading,
-    error: commentState.error,
-    message: commentState.message,
     fetchComments,
     addComment,
   };

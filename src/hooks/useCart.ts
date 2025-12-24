@@ -1,4 +1,3 @@
-import { useSnapshot } from "valtio";
 import { CartStore, CartActions } from "../stores/cartStore";
 import { useApi } from "./useApi";
 import type { Cart, CartProduct } from "../stores/types/cart";
@@ -9,8 +8,6 @@ import { calculateDiscountedPrice } from "../stores/utils/cartHelpers";
 
 export const useCart = () => {
   const api = useApi();
-  const cartState = useSnapshot(CartStore);
-  const { user } = useSnapshot(AuthStore);
 
   const fetchUserCart = async (userId: number) => {
     const result = await handleAsync(
@@ -52,9 +49,9 @@ export const useCart = () => {
         };
 
         try {
-          if (!cartState.cart) {
+          if (!CartStore.cart) {
             await api.post<Cart>("/carts/add", {
-              userId: user?.id || 1,
+              userId: AuthStore.user?.id || 1,
               products: [
                 {
                   id: product.id,
@@ -63,26 +60,26 @@ export const useCart = () => {
               ],
             });
           } else {
-            const existingIndex = cartState.cart.products.findIndex(
+            const existingIndex = CartStore.cart.products.findIndex(
               (p) => p.id === product.id
             );
 
             const updatedProducts =
               existingIndex !== -1
-                ? cartState.cart.products.map((p, idx) =>
+                ? CartStore.cart.products.map((p, idx) =>
                     idx === existingIndex
                       ? { id: p.id, quantity: p.quantity + quantity }
                       : { id: p.id, quantity: p.quantity }
                   )
                 : [
-                    ...cartState.cart.products.map((p) => ({
+                    ...CartStore.cart.products.map((p) => ({
                       id: p.id,
                       quantity: p.quantity,
                     })),
                     { id: product.id, quantity },
                   ];
 
-            await api.put<Cart>(`/carts/${user?.id || 1}`, {
+            await api.put<Cart>(`/carts/${AuthStore.user?.id || 1}`, {
               merge: true,
               products: updatedProducts,
             });
@@ -112,14 +109,14 @@ export const useCart = () => {
 
     const result = await handleAsync(
       async () => {
-        if (!cartState.cart) return false;
+        if (!CartStore.cart) return false;
 
-        const updatedProducts = cartState.cart.products.map((p) =>
+        const updatedProducts = CartStore.cart.products.map((p) =>
           p.id === productId ? { id: p.id, quantity } : { id: p.id, quantity: p.quantity }
         );
 
         try {
-          await api.put<Cart>(`/carts/${user?.id || 1}`, {
+          await api.put<Cart>(`/carts/${AuthStore.user?.id || 1}`, {
             merge: true,
             products: updatedProducts,
           });
@@ -144,17 +141,17 @@ export const useCart = () => {
   const removeFromCart = async (productId: number) => {
     const result = await handleAsync(
       async () => {
-        if (!cartState.cart) return false;
+        if (!CartStore.cart) return false;
 
-        const updatedProducts = cartState.cart.products
+        const updatedProducts = CartStore.cart.products
           .filter((p) => p.id !== productId)
           .map((p) => ({ id: p.id, quantity: p.quantity }));
 
         try {
           if (updatedProducts.length === 0) {
-            await api.del(`/carts/${user?.id || 1}`);
+            await api.del(`/carts/${AuthStore.user?.id || 1}`);
           } else {
-            await api.put<Cart>(`/carts/${user?.id || 1}`, {
+            await api.put<Cart>(`/carts/${AuthStore.user?.id || 1}`, {
               merge: true,
               products: updatedProducts,
             });
@@ -185,10 +182,10 @@ export const useCart = () => {
   const clearCart = async () => {
     const result = await handleAsync(
       async () => {
-        if (!cartState.cart) return false;
+        if (!CartStore.cart) return false;
 
         try {
-          await api.del(`/carts/${user?.id || 1}`);
+          await api.del(`/carts/${AuthStore.user?.id || 1}`);
         } catch (error) {
           console.warn("API call failed, updating local state only:", error);
         }
@@ -207,25 +204,11 @@ export const useCart = () => {
     return result ?? false;
   };
 
-  const getTotalItems = () => {
-    return cartState.cart?.totalQuantity || 0;
-  };
-
-  const getCartTotal = () => {
-    return cartState.cart?.discountedTotal || 0;
-  };
-
   return {
-    cart: cartState.cart,
-    isLoading: cartState.isLoading,
-    error: cartState.error,
-    message: cartState.message,
     fetchUserCart,
     addToCart,
     updateQuantity,
     removeFromCart,
     clearCart,
-    getTotalItems,
-    getCartTotal,
   };
 };

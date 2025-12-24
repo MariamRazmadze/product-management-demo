@@ -1,8 +1,9 @@
+import { useSnapshot } from "valtio";
 import { useEffect, useState } from "react";
 import { useComments } from "../../hooks/useComments";
+import { CommentStore, CommentActions } from "../../stores/commentStore";
 import { useTranslation } from "../../hooks/useTranslation";
 import AlertMessage from "../ui/AlertMessage";
-import { CommentActions } from "../../stores/commentStore";
 
 type CommentSectionProps = {
   productId: number;
@@ -10,8 +11,10 @@ type CommentSectionProps = {
 
 export default function CommentSection({ productId }: CommentSectionProps) {
   const { t } = useTranslation();
-  const { comments, addComment, fetchComments, isLoading, error, message } =
-    useComments(productId);
+  const { addComment, fetchComments } = useComments(productId);
+  const commentState = useSnapshot(CommentStore);
+  const comments = commentState.comments[productId] || [];
+  const { isLoading, error, message } = commentState;
   const [commentText, setCommentText] = useState("");
 
   useEffect(() => {

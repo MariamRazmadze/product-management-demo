@@ -1,11 +1,9 @@
-import { useSnapshot } from "valtio";
-import { ProductActions, ProductStore } from "../stores/productStore";
+import { ProductActions } from "../stores/productStore";
 import { useApi } from "./useApi";
 import type { Product } from "../stores/types/product";
 import { handleAsync } from "../utils/asyncHandler";
 
 export const useProducts = () => {
-  const productState = useSnapshot(ProductStore);
   const api = useApi();
 
   const fetchProducts = async (limit = 30) => {
@@ -38,7 +36,10 @@ export const useProducts = () => {
   }) => {
     const result = await handleAsync(
       async () => {
-        const newProduct = await api.post<Product>("/products/add", productData);
+        const newProduct = await api.post<Product>(
+          "/products/add",
+          productData
+        );
 
         ProductActions.addProduct(newProduct);
         ProductActions.setMessage("Product added successfully!");
@@ -110,9 +111,5 @@ export const useProducts = () => {
     addProduct,
     updateProduct,
     deleteProduct,
-    products: productState.products,
-    isLoading: productState.isLoading,
-    error: productState.error,
-    message: productState.message,
   };
 };
