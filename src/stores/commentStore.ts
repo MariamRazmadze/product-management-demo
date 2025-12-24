@@ -1,5 +1,6 @@
 import { proxy } from "valtio";
 import type { CommentsState, ProductComment } from "./types/comment";
+import { createCommonActions } from "./utils/storeHelpers";
 
 const initialState: CommentsState = {
   comments: {},
@@ -21,15 +22,9 @@ export const CommentActions = {
     commentStore.comments[comment.postId].unshift(comment);
   },
 
-  setLoading: (isLoading: boolean) => {
-    commentStore.isLoading = isLoading;
-  },
-
-  setError: (error: string) => {
-    commentStore.error = error;
-  },
-
   clearComments: (productId: number) => {
     delete commentStore.comments[productId];
   },
+
+  ...createCommonActions(commentStore),
 };

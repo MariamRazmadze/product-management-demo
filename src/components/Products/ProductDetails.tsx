@@ -19,9 +19,9 @@ export default function ProductDetails({
   const [quantity, setQuantity] = useState(1);
   const [isAdding, setIsAdding] = useState(false);
 
-  const handleAddToCart = () => {
+  const handleAddToCart = async () => {
     setIsAdding(true);
-    addToCart(product, quantity);
+    await addToCart(product, quantity);
     setTimeout(() => setIsAdding(false), 500);
   };
 

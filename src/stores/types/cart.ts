@@ -23,4 +23,5 @@ export type CartState = {
   cart: Cart | null;
   isLoading: boolean;
   error: string;
+  message: string;
 };

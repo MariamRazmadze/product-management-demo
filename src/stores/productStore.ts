@@ -1,5 +1,9 @@
 import { proxy } from "valtio";
 import type { Product, ProductsState } from "./types/product";
+import {
+  createCommonActions,
+  createMessageActions,
+} from "./utils/storeHelpers";
 
 const initialState: ProductsState = {
   products: [],
@@ -30,20 +34,6 @@ export const ProductActions = {
     ProductStore.products = ProductStore.products.filter((p) => p.id !== id);
   },
 
-  setLoading: (isLoading: boolean) => {
-    ProductStore.isLoading = isLoading;
-  },
-
-  setError: (message: string) => {
-    ProductStore.error = message;
-  },
-
-  setMessage: (message: string) => {
-    ProductStore.message = message;
-  },
-
-  clearMessages: () => {
-    ProductStore.message = "";
-    ProductStore.error = "";
-  },
+  ...createCommonActions(ProductStore),
+  ...createMessageActions(ProductStore),
 };

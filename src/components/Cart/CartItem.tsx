@@ -8,7 +8,7 @@ type CartItemProps = {
 
 export default function CartItem({ product }: CartItemProps) {
   const { t } = useTranslation();
-  const { updateQuantity, removeFromCart } = useCart();
+  const { updateQuantity, removeFromCart, isLoading } = useCart();
 
   return (
     <div
@@ -31,9 +31,9 @@ export default function CartItem({ product }: CartItemProps) {
           className="text-sm mb-2 text-gray-600 dark:text-gray-400"
         >
           <div>
-            {t.cart?.price || "Price"}: ${product.price.toFixed(2)}
+            {t.cart?.price || "Price"}: ${(product.price ?? 0).toFixed(2)}
           </div>
-          {product.discountPercentage > 0 && (
+          {(product.discountPercentage ?? 0) > 0 && (
             <div className="text-green-600">
               {t.cart?.discount || "Discount"}: {product.discountPercentage}%
             </div>
@@ -43,8 +43,9 @@ export default function CartItem({ product }: CartItemProps) {
         <div className="flex items-center gap-3">
           <div className="flex items-center gap-2">
             <button
-              onClick={() => updateQuantity(product.id, product.quantity - 1)}
-              className="w-8 h-8 rounded-lg font-bold bg-gray-200 hover:bg-gray-300 text-gray-900 dark:bg-gray-700 dark:hover:bg-gray-600 dark:text-white"
+              onClick={async () => await updateQuantity(product.id, product.quantity - 1)}
+              className="w-8 h-8 rounded-lg font-bold bg-gray-200 hover:bg-gray-300 text-gray-900 dark:bg-gray-700 dark:hover:bg-gray-600 dark:text-white disabled:opacity-50 disabled:cursor-not-allowed"
+              disabled={isLoading}
             >
               −
             </button>
@@ -54,16 +55,18 @@ export default function CartItem({ product }: CartItemProps) {
               {product.quantity}
             </span>
             <button
-              onClick={() => updateQuantity(product.id, product.quantity + 1)}
-              className="w-8 h-8 rounded-lg font-bold bg-gray-200 hover:bg-gray-300 text-gray-900 dark:bg-gray-700 dark:hover:bg-gray-600 dark:text-white"
+              onClick={async () => await updateQuantity(product.id, product.quantity + 1)}
+              className="w-8 h-8 rounded-lg font-bold bg-gray-200 hover:bg-gray-300 text-gray-900 dark:bg-gray-700 dark:hover:bg-gray-600 dark:text-white disabled:opacity-50 disabled:cursor-not-allowed"
+              disabled={isLoading}
             >
               +
             </button>
           </div>
 
           <button
-            onClick={() => removeFromCart(product.id)}
-            className="px-3 py-1 rounded-lg text-sm font-semibold text-white bg-red-500 hover:bg-red-600 dark:bg-red-600 dark:hover:bg-red-700"
+            onClick={async () => await removeFromCart(product.id)}
+            className="px-3 py-1 rounded-lg text-sm font-semibold text-white bg-red-500 hover:bg-red-600 dark:bg-red-600 dark:hover:bg-red-700 disabled:opacity-50 disabled:cursor-not-allowed"
+            disabled={isLoading}
           >
             {t.cart?.remove || "Remove"}
           </button>
@@ -74,13 +77,13 @@ export default function CartItem({ product }: CartItemProps) {
         className="text-right text-gray-900 dark:text-white"
       >
         <div className="font-semibold text-lg">
-          ${product.discountedTotal.toFixed(2)}
+          ${(product.discountedTotal ?? 0).toFixed(2)}
         </div>
-        {product.discountPercentage > 0 && (
+        {(product.discountPercentage ?? 0) > 0 && (
           <div
             className="text-sm line-through text-gray-400 dark:text-gray-500"
           >
-            ${product.total.toFixed(2)}
+            ${(product.total ?? 0).toFixed(2)}
           </div>
         )}
       </div>

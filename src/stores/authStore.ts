@@ -1,5 +1,9 @@
 import { proxy } from "valtio";
 import type { User, AuthProps } from "./types/user";
+import {
+  createCommonActions,
+  createMessageActions,
+} from "./utils/storeHelpers";
 
 const initialState: AuthProps = {
   user: null,
@@ -30,21 +34,6 @@ export const AuthActions = {
     AuthStore.authStatus.message = "";
   },
 
-  setLoading: (isLoading: boolean): void => {
-    AuthStore.authStatus.isLoading = isLoading;
-  },
-
-  setError: (message: string): void => {
-    AuthStore.authStatus.error = message;
-    AuthStore.authStatus.isSuccess = false;
-  },
-
-  setMessage: (message: string): void => {
-    AuthStore.authStatus.message = message;
-  },
-
-  clearMessages: (): void => {
-    AuthStore.authStatus.message = "";
-    AuthStore.authStatus.error = "";
-  },
+  ...createCommonActions(AuthStore.authStatus),
+  ...createMessageActions(AuthStore.authStatus),
 };

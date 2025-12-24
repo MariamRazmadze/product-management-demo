@@ -29,9 +29,9 @@ export default function ProductCard({ product, onEdit }: ProductCardProps) {
     }
   };
 
-  const handleAddToCart = () => {
+  const handleAddToCart = async () => {
     setIsAdding(true);
-    addToCart(product, 1);
+    await addToCart(product, 1);
     setTimeout(() => setIsAdding(false), 500);
   };
 
