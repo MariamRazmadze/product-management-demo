@@ -16,6 +16,7 @@ export type CommentsState = {
   comments: Record<number, ProductComment[]>;
   isLoading: boolean;
   error: string;
+  message: string;
 };
 
 export type CommentsResponse = {

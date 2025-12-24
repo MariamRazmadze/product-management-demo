@@ -1,11 +1,18 @@
-import { proxy } from "valtio";
-const getInitialTheme = (): "light" | "dark" => {
-  if (typeof window === "undefined") return "dark";
-  const saved = localStorage.getItem("theme");
-  return (saved as "light" | "dark") || "dark";
+import { proxy, subscribe } from "valtio";
+
+type Theme = "light" | "dark";
+
+type ThemeState = {
+  theme: Theme;
 };
 
-const applyTheme = (theme: "light" | "dark") => {
+const getInitialTheme = (): Theme => {
+  if (typeof window === "undefined") return "dark";
+  const saved = localStorage.getItem("theme");
+  return (saved as Theme) || "dark";
+};
+
+const applyTheme = (theme: Theme) => {
   if (typeof window === "undefined") return;
 
   if (theme === "dark") {
@@ -16,13 +23,24 @@ const applyTheme = (theme: "light" | "dark") => {
   localStorage.setItem("theme", theme);
 };
 
-const initialTheme = getInitialTheme();
-applyTheme(initialTheme);
+const initialState: ThemeState = {
+  theme: getInitialTheme(),
+};
 
-export const themeStore = proxy({
-  theme: initialTheme,
+applyTheme(initialState.theme);
+
+export const themeStore = proxy<ThemeState>(initialState);
+
+export const ThemeActions = {
   toggleTheme: () => {
     themeStore.theme = themeStore.theme === "light" ? "dark" : "light";
-    applyTheme(themeStore.theme);
   },
+
+  setTheme: (theme: Theme) => {
+    themeStore.theme = theme;
+  },
+};
+
+subscribe(themeStore, () => {
+  applyTheme(themeStore.theme);
 });

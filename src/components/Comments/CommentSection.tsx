@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { useComments } from "../../hooks/useComments";
 import { useTranslation } from "../../hooks/useTranslation";
+import AlertMessage from "../ui/AlertMessage";
+import { CommentActions } from "../../stores/commentStore";
 
 type CommentSectionProps = {
   productId: number;
@@ -8,7 +10,7 @@ type CommentSectionProps = {
 
 export default function CommentSection({ productId }: CommentSectionProps) {
   const { t } = useTranslation();
-  const { comments, addComment, fetchComments, isLoading, error } =
+  const { comments, addComment, fetchComments, isLoading, error, message } =
     useComments(productId);
   const [commentText, setCommentText] = useState("");
 
@@ -16,6 +18,12 @@ export default function CommentSection({ productId }: CommentSectionProps) {
     fetchComments();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [productId]);
+
+  useEffect(() => {
+    return () => {
+      CommentActions.clearMessages();
+    };
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -36,11 +44,7 @@ export default function CommentSection({ productId }: CommentSectionProps) {
         )}
       </h3>
 
-      {error && (
-        <div className="mb-4 p-3 rounded-lg bg-red-100 dark:bg-red-900 text-red-700 dark:text-red-200">
-          {error}
-        </div>
-      )}
+      <AlertMessage message={message} error={error} />
 
       <form onSubmit={handleSubmit} className="mb-6">
         <textarea

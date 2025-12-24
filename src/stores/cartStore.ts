@@ -11,73 +11,75 @@ import {
   findProductInCart,
 } from "./utils/cartHelpers";
 
-export const cartStore = proxy<CartState>({
+const initialState: CartState = {
   cart: null,
   isLoading: false,
   error: "",
   message: "",
-});
+};
+
+export const CartStore = proxy<CartState>(initialState);
 
 export const CartActions = {
   setCart: (cart: Cart) => {
-    cartStore.cart = cart;
+    CartStore.cart = cart;
   },
 
-  ...createCommonActions(cartStore),
-  ...createMessageActions(cartStore),
+  ...createCommonActions(CartStore),
+  ...createMessageActions(CartStore),
 
   addProduct: (product: CartProduct) => {
-    if (!cartStore.cart) {
-      cartStore.cart = createInitialCart(product);
+    if (!CartStore.cart) {
+      CartStore.cart = createInitialCart(product);
       return;
     }
 
-    const [existingProduct] = findProductInCart(cartStore.cart, product.id);
+    const [existingProduct] = findProductInCart(CartStore.cart, product.id);
 
     if (existingProduct !== null) {
       existingProduct.quantity += product.quantity;
       updateProductTotals(existingProduct);
     } else {
-      cartStore.cart.products.push(product);
-      cartStore.cart.totalProducts += 1;
+      CartStore.cart.products.push(product);
+      CartStore.cart.totalProducts += 1;
     }
 
-    cartStore.cart.totalQuantity += product.quantity;
-    recalculateCartTotals(cartStore.cart);
+    CartStore.cart.totalQuantity += product.quantity;
+    recalculateCartTotals(CartStore.cart);
   },
 
   updateQuantity: (productId: number, quantity: number) => {
-    if (!cartStore.cart) return;
+    if (!CartStore.cart) return;
 
-    const [product] = findProductInCart(cartStore.cart, productId);
+    const [product] = findProductInCart(CartStore.cart, productId);
     if (!product) return;
 
     const quantityDiff = quantity - product.quantity;
     product.quantity = quantity;
     updateProductTotals(product);
 
-    cartStore.cart.totalQuantity += quantityDiff;
-    recalculateCartTotals(cartStore.cart);
+    CartStore.cart.totalQuantity += quantityDiff;
+    recalculateCartTotals(CartStore.cart);
   },
 
   removeProduct: (productId: number) => {
-    if (!cartStore.cart) return;
+    if (!CartStore.cart) return;
 
     const [product, productIndex] = findProductInCart(
-      cartStore.cart,
+      CartStore.cart,
       productId
     );
     if (product === null) return;
 
-    cartStore.cart.totalQuantity -= product.quantity;
-    cartStore.cart.totalProducts -= 1;
+    CartStore.cart.totalQuantity -= product.quantity;
+    CartStore.cart.totalProducts -= 1;
 
-    cartStore.cart.products.splice(productIndex, 1);
+    CartStore.cart.products.splice(productIndex, 1);
 
-    recalculateCartTotals(cartStore.cart);
+    recalculateCartTotals(CartStore.cart);
   },
 
   clearCart: () => {
-    cartStore.cart = null;
+    CartStore.cart = null;
   },
 };

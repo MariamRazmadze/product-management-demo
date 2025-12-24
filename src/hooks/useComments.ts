@@ -1,12 +1,12 @@
 import { useSnapshot } from "valtio";
-import { commentStore, CommentActions } from "../stores/commentStore";
+import { CommentStore, CommentActions } from "../stores/commentStore";
 import type { ProductComment, CommentsResponse } from "../stores/types/comment";
 import { useApi } from "./useApi";
 import { handleAsync } from "../utils/asyncHandler";
 import { AuthStore } from "../stores/authStore";
 
 export const useComments = (productId: number) => {
-  const commentState = useSnapshot(commentStore);
+  const commentState = useSnapshot(CommentStore);
   const { user } = useSnapshot(AuthStore);
   const comments = commentState.comments[productId] || [];
   const api = useApi();
@@ -52,6 +52,7 @@ export const useComments = (productId: number) => {
         };
 
         CommentActions.addComment(newComment);
+        CommentActions.setMessage("Comment added successfully!");
         return true;
       },
       {
@@ -68,6 +69,7 @@ export const useComments = (productId: number) => {
     comments,
     isLoading: commentState.isLoading,
     error: commentState.error,
+    message: commentState.message,
     fetchComments,
     addComment,
   };

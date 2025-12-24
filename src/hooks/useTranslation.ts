@@ -1,5 +1,5 @@
 import { useSnapshot } from "valtio";
-import { appStore } from "../stores/appStore";
+import { appStore, AppActions } from "../stores/appStore";
 import { translations } from "../locales/translations";
 
 export function useTranslation() {
@@ -7,5 +7,5 @@ export function useTranslation() {
 
   const t = translations[language];
 
-  return { t, language, toggleLanguage: appStore.toggleLanguage };
+  return { t, language, toggleLanguage: AppActions.toggleLanguage };
 }

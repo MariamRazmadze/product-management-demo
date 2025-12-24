@@ -1,30 +1,35 @@
 import { proxy } from "valtio";
 import type { CommentsState, ProductComment } from "./types/comment";
-import { createCommonActions } from "./utils/storeHelpers";
+import {
+  createCommonActions,
+  createMessageActions,
+} from "./utils/storeHelpers";
 
 const initialState: CommentsState = {
   comments: {},
   isLoading: false,
   error: "",
+  message: "",
 };
 
-export const commentStore = proxy<CommentsState>(initialState);
+export const CommentStore = proxy<CommentsState>(initialState);
 
 export const CommentActions = {
   setComments: (productId: number, comments: ProductComment[]) => {
-    commentStore.comments[productId] = comments;
+    CommentStore.comments[productId] = comments;
   },
 
   addComment: (comment: ProductComment) => {
-    if (!commentStore.comments[comment.postId]) {
-      commentStore.comments[comment.postId] = [];
+    if (!CommentStore.comments[comment.postId]) {
+      CommentStore.comments[comment.postId] = [];
     }
-    commentStore.comments[comment.postId].unshift(comment);
+    CommentStore.comments[comment.postId].unshift(comment);
   },
 
   clearComments: (productId: number) => {
-    delete commentStore.comments[productId];
+    delete CommentStore.comments[productId];
   },
 
-  ...createCommonActions(commentStore),
+  ...createCommonActions(CommentStore),
+  ...createMessageActions(CommentStore),
 };

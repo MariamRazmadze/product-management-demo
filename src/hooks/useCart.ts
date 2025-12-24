@@ -1,5 +1,5 @@
 import { useSnapshot } from "valtio";
-import { cartStore, CartActions } from "../stores/cartStore";
+import { CartStore, CartActions } from "../stores/cartStore";
 import { useApi } from "./useApi";
 import type { Cart, CartProduct } from "../stores/types/cart";
 import type { Product } from "../stores/types/product";
@@ -9,7 +9,7 @@ import { calculateDiscountedPrice } from "../stores/utils/cartHelpers";
 
 export const useCart = () => {
   const api = useApi();
-  const cartState = useSnapshot(cartStore);
+  const cartState = useSnapshot(CartStore);
   const { user } = useSnapshot(AuthStore);
 
   const fetchUserCart = async (userId: number) => {

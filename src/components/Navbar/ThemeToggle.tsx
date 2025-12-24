@@ -1,12 +1,12 @@
 import { useSnapshot } from "valtio";
-import { themeStore } from "../../stores/themeStore";
+import { themeStore, ThemeActions } from "../../stores/themeStore";
 
 export default function ThemeToggle() {
   const { theme } = useSnapshot(themeStore);
 
   return (
     <button
-      onClick={themeStore.toggleTheme}
+      onClick={ThemeActions.toggleTheme}
       className="group relative p-2.5 rounded-xl transition-all duration-300 bg-linear-to-br from-indigo-50 to-purple-50 hover:from-indigo-100 hover:to-purple-100 border border-indigo-200 dark:from-amber-500/20 dark:to-orange-500/20 dark:hover:from-amber-500/30 dark:hover:to-orange-500/30 dark:border-amber-500/30"
       aria-label="Toggle theme"
     >
