@@ -1,15 +1,15 @@
 import { useSnapshot } from "valtio";
 import { useState } from "react";
-import { ProductStore } from "../../stores/productStore";
-import { useProducts } from "../../hooks/useProducts";
-import Button from "../ui/Button";
-import Modal from "../ui/Modal";
-import FormField from "../ui/FormField";
-import FormGrid from "../ui/FormGrid";
-import AlertMessage from "../ui/AlertMessage";
-import type { Product } from "../../stores/types/product";
-import { useTranslation } from "../../hooks/useTranslation";
-import { productSchema } from "../../schemas/productSchema";
+import { ProductStore } from "../../../stores/productStore";
+import { useProducts } from "../../../hooks/useProducts";
+import Button from "../../ui/Button";
+import Modal from "../../ui/Modal";
+import FormField from "../../ui/FormField";
+import FormGrid from "../../ui/FormGrid";
+import AlertMessage from "../../ui/AlertMessage";
+import type { Product } from "../../../stores/types/product";
+import { useTranslation } from "../../../hooks/useTranslation";
+import { productSchema } from "../../../schemas/productSchema";
 import { ZodError } from "zod";
 
 type ProductModalProps = {

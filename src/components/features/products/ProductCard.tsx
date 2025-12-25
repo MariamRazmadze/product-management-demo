@@ -1,10 +1,10 @@
 import { useState } from "react";
-import { useProducts } from "../../hooks/useProducts";
-import { useCart } from "../../hooks/useCart";
-import Button from "../ui/Button";
+import { useProducts } from "../../../hooks/useProducts";
+import { useCart } from "../../../hooks/useCart";
+import Button from "../../ui/Button";
 import ProductDetails from "./ProductDetails";
-import type { Product } from "../../stores/types/product";
-import { useTranslation } from "../../hooks/useTranslation";
+import type { Product } from "../../../stores/types/product";
+import { useTranslation } from "../../../hooks/useTranslation";
 
 type ProductCardProps = {
   product: Product;

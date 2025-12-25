@@ -1,6 +1,6 @@
 import { useSnapshot } from "valtio";
-import { themeStore } from "../../stores/themeStore";
-import { useTranslation } from "../../hooks/useTranslation";
+import { themeStore } from "../../../stores/themeStore";
+import { useTranslation } from "../../../hooks/useTranslation";
 
 export default function Logo() {
   const { theme } = useSnapshot(themeStore);

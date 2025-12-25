@@ -1,5 +1,5 @@
 import { useSnapshot } from "valtio";
-import { themeStore, ThemeActions } from "../../stores/themeStore";
+import { themeStore, ThemeActions } from "../../../stores/themeStore";
 
 export default function ThemeToggle() {
   const { theme } = useSnapshot(themeStore);

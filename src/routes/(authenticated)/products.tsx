@@ -1,10 +1,10 @@
 import { createFileRoute } from "@tanstack/react-router";
-import ProductList from "../../components/Products/ProductsList";
+import ProductsPage from "../../pages/products/ProductsPage";
 
 export const Route = createFileRoute("/(authenticated)/products")({
   component: RouteComponent,
 });
 
 function RouteComponent() {
-  return <ProductList />;
+  return <ProductsPage />;
 }

@@ -1,9 +1,9 @@
 import { useState } from "react";
-import { useCart } from "../../hooks/useCart";
-import type { Product } from "../../stores/types/product";
-import CommentSection from "../Comments/CommentSection";
-import Modal from "../ui/Modal";
-import { useTranslation } from "../../hooks/useTranslation";
+import { useCart } from "../../../hooks/useCart";
+import type { Product } from "../../../stores/types/product";
+import CommentSection from "../comments/CommentSection";
+import Modal from "../../ui/Modal";
+import { useTranslation } from "../../../hooks/useTranslation";
 
 type ProductDetailsProps = {
   product: Product;

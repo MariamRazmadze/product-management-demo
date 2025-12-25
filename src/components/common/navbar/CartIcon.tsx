@@ -1,7 +1,7 @@
 import { useSnapshot } from "valtio";
 import { useNavigate } from "@tanstack/react-router";
-import { CartStore } from "../../stores/cartStore";
-import { ShoppingCartIcon } from "../icons/NavbarIcons";
+import { CartStore } from "../../../stores/cartStore";
+import { ShoppingCartIcon } from "../../icons/NavbarIcons";
 
 export default function CartIcon() {
   const navigate = useNavigate();

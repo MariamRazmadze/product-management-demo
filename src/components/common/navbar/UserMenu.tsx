@@ -1,9 +1,9 @@
 import { useNavigate } from "@tanstack/react-router";
 import { useSnapshot } from "valtio";
-import { AuthStore } from "../../stores/authStore";
-import { useAuth } from "../../hooks/useAuth";
-import { useTranslation } from "../../hooks/useTranslation";
-import { LogoutIcon } from "../icons/NavbarIcons";
+import { AuthStore } from "../../../stores/authStore";
+import { useAuth } from "../../../hooks/useAuth";
+import { useTranslation } from "../../../hooks/useTranslation";
+import { LogoutIcon } from "../../icons/NavbarIcons";
 
 export default function UserMenu() {
   const navigate = useNavigate();

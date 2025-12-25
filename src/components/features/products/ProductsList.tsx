@@ -1,15 +1,15 @@
 import { useSnapshot } from "valtio";
 import { useState, useEffect } from "react";
-import { ProductStore, ProductActions } from "../../stores/productStore";
-import { useProducts } from "../../hooks/useProducts";
+import { ProductStore, ProductActions } from "../../../stores/productStore";
+import { useProducts } from "../../../hooks/useProducts";
 import ProductCard from "./ProductCard";
 import ProductModal from "./ProductModal";
-import Button from "../ui/Button";
-import AlertMessage from "../ui/AlertMessage";
-import LoadingSpinner from "../ui/LoadingSpinner";
-import EmptyState from "../ui/EmptyState";
-import type { Product } from "../../stores/types/product";
-import { useTranslation } from "../../hooks/useTranslation";
+import Button from "../../ui/Button";
+import AlertMessage from "../../ui/AlertMessage";
+import LoadingSpinner from "../../ui/LoadingSpinner";
+import EmptyState from "../../ui/EmptyState";
+import type { Product } from "../../../stores/types/product";
+import { useTranslation } from "../../../hooks/useTranslation";
 
 export default function ProductList() {
   const { t } = useTranslation();

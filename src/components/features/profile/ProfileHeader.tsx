@@ -1,5 +1,5 @@
-import Button from "../ui/Button";
-import { useTranslation } from "../../hooks/useTranslation";
+import Button from "../../ui/Button";
+import { useTranslation } from "../../../hooks/useTranslation";
 
 type ProfileHeaderProps = {
   user: {

@@ -4,11 +4,11 @@ import { useSnapshot } from "valtio";
 import { useTranslation } from "../../hooks/useTranslation";
 import { useAuth } from "../../hooks/useAuth";
 import { AuthStore } from "../../stores/authStore";
-import Button from "../ui/Button";
+import Button from "../../components/ui/Button";
 import { loginSchema } from "../../schemas/authSchema";
 import { ZodError } from "zod";
 
-export default function Login() {
+export default function LoginPage() {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const { login } = useAuth();

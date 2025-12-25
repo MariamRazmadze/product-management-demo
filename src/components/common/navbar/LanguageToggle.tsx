@@ -1,7 +1,7 @@
 import { useSnapshot } from "valtio";
-import { themeStore } from "../../stores/themeStore";
-import { useTranslation } from "../../hooks/useTranslation";
-import { LanguageIcon } from "../icons/NavbarIcons";
+import { themeStore } from "../../../stores/themeStore";
+import { useTranslation } from "../../../hooks/useTranslation";
+import { LanguageIcon } from "../../icons/NavbarIcons";
 
 export default function LanguageToggle() {
   const { theme } = useSnapshot(themeStore);

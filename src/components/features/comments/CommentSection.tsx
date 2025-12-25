@@ -1,9 +1,9 @@
 import { useSnapshot } from "valtio";
 import { useEffect, useState } from "react";
-import { useComments } from "../../hooks/useComments";
-import { CommentStore, CommentActions } from "../../stores/commentStore";
-import { useTranslation } from "../../hooks/useTranslation";
-import AlertMessage from "../ui/AlertMessage";
+import { useComments } from "../../../hooks/useComments";
+import { CommentStore, CommentActions } from "../../../stores/commentStore";
+import { useTranslation } from "../../../hooks/useTranslation";
+import AlertMessage from "../../ui/AlertMessage";
 
 type CommentSectionProps = {
   productId: number;

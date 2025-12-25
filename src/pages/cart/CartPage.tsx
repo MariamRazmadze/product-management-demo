@@ -1,12 +1,12 @@
 import { useSnapshot } from "valtio";
 import { useCart } from "../../hooks/useCart";
 import { CartStore, CartActions } from "../../stores/cartStore";
-import CartItem from "./CartItem";
-import EmptyState from "../ui/EmptyState";
-import LoadingSpinner from "../ui/LoadingSpinner";
-import AlertMessage from "../ui/AlertMessage";
+import CartItem from "../../components/features/cart/CartItem";
+import EmptyState from "../../components/ui/EmptyState";
+import LoadingSpinner from "../../components/ui/LoadingSpinner";
+import AlertMessage from "../../components/ui/AlertMessage";
 import { useTranslation } from "../../hooks/useTranslation";
-import { ShoppingCartIcon } from "../icons/NavbarIcons";
+import { ShoppingCartIcon } from "../../components/icons/NavbarIcons";
 import { useEffect } from "react";
 
 export default function CartPage() {

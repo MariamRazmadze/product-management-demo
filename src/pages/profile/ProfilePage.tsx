@@ -2,14 +2,14 @@ import { useSnapshot } from "valtio";
 import { useState, useEffect, useRef } from "react";
 import { AuthStore, AuthActions } from "../../stores/authStore";
 import { useAuth } from "../../hooks/useAuth";
-import ProfileHeader from "./ProfileHeader";
-import AlertMessage from "../ui/AlertMessage";
-import FormField from "../ui/FormField";
+import ProfileHeader from "../../components/features/profile/ProfileHeader";
+import AlertMessage from "../../components/ui/AlertMessage";
+import FormField from "../../components/ui/FormField";
 import { useTranslation } from "../../hooks/useTranslation";
 import { profileSchema } from "../../schemas/profileSchema";
 import { ZodError } from "zod";
 
-export default function Profile() {
+export default function ProfilePage() {
   const { updateProfile } = useAuth();
   const authState = useSnapshot(AuthStore);
   const [isEditing, setIsEditing] = useState(false);

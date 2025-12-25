@@ -1,8 +1,8 @@
 import { useSnapshot } from "valtio";
-import { useCart } from "../../hooks/useCart";
-import { CartStore } from "../../stores/cartStore";
-import type { CartProduct } from "../../stores/types/cart";
-import { useTranslation } from "../../hooks/useTranslation";
+import { useCart } from "../../../hooks/useCart";
+import { CartStore } from "../../../stores/cartStore";
+import type { CartProduct } from "../../../stores/types/cart";
+import { useTranslation } from "../../../hooks/useTranslation";
 
 type CartItemProps = {
   product: CartProduct;
