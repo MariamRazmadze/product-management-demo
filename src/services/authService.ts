@@ -21,7 +21,11 @@ export const authService = {
       const user = mapToUser(userData, token);
       AuthActions.setUser(user);
       return true;
-    } catch (error) {
+    } catch (error: any) {
+      if (error?.message === "Unauthorized") {
+        removeToken();
+        return false;
+      }
       console.error("Failed to initialize auth:", error);
       removeToken();
       return false;

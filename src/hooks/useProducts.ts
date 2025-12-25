@@ -87,6 +87,22 @@ export const useProducts = () => {
     return result ?? false;
   };
 
+  const fetchProduct = async (id: number) => {
+    const result = await handleAsync(
+      async () => {
+        const product = await api.get<Product>(`/products/${id}`);
+        return product;
+      },
+      {
+        setLoading: ProductActions.setLoading,
+        setError: ProductActions.setError,
+        errorMessage: "Failed to fetch product",
+      }
+    );
+
+    return result;
+  };
+
   const deleteProduct = async (id: number) => {
     const result = await handleAsync(
       async () => {
@@ -108,6 +124,7 @@ export const useProducts = () => {
 
   return {
     fetchProducts,
+    fetchProduct,
     addProduct,
     updateProduct,
     deleteProduct,

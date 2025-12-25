@@ -45,7 +45,7 @@ export const useCart = () => {
           total,
           discountPercentage,
           discountedTotal: calculateDiscountedPrice(total, discountPercentage),
-          thumbnail: product.thumbnail,
+          thumbnail: product.thumbnail ?? '',
         };
 
         try {

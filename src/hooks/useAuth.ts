@@ -1,4 +1,5 @@
 import { AuthActions, AuthStore } from "../stores/authStore";
+import { CartActions } from "../stores/cartStore";
 import { useApi } from "./useApi";
 import { saveToken, removeToken } from "../utils/storage";
 import type { User, LoginResponse } from "../stores/types/user";
@@ -38,6 +39,7 @@ export const useAuth = () => {
   const logout = () => {
     removeToken();
     AuthActions.clearUser();
+    CartActions.clearCart();
   };
 
   const getCurrentUser = async () => {

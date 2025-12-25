@@ -15,6 +15,8 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as authenticatedProfileRouteImport } from './routes/(authenticated)/profile'
 import { Route as authenticatedProductsRouteImport } from './routes/(authenticated)/products'
 import { Route as authenticatedCartRouteImport } from './routes/(authenticated)/cart'
+import { Route as authenticatedProductsIndexRouteImport } from './routes/(authenticated)/products.index'
+import { Route as authenticatedProductsIdRouteImport } from './routes/(authenticated)/products.$id'
 
 const LoginRoute = LoginRouteImport.update({
   id: '/login',
@@ -45,20 +47,34 @@ const authenticatedCartRoute = authenticatedCartRouteImport.update({
   path: '/cart',
   getParentRoute: () => authenticatedRouteRoute,
 } as any)
+const authenticatedProductsIndexRoute =
+  authenticatedProductsIndexRouteImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => authenticatedProductsRoute,
+  } as any)
+const authenticatedProductsIdRoute = authenticatedProductsIdRouteImport.update({
+  id: '/$id',
+  path: '/$id',
+  getParentRoute: () => authenticatedProductsRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/login': typeof LoginRoute
   '/cart': typeof authenticatedCartRoute
-  '/products': typeof authenticatedProductsRoute
+  '/products': typeof authenticatedProductsRouteWithChildren
   '/profile': typeof authenticatedProfileRoute
+  '/products/$id': typeof authenticatedProductsIdRoute
+  '/products/': typeof authenticatedProductsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/login': typeof LoginRoute
   '/cart': typeof authenticatedCartRoute
-  '/products': typeof authenticatedProductsRoute
   '/profile': typeof authenticatedProfileRoute
+  '/products/$id': typeof authenticatedProductsIdRoute
+  '/products': typeof authenticatedProductsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -66,14 +82,23 @@ export interface FileRoutesById {
   '/(authenticated)': typeof authenticatedRouteRouteWithChildren
   '/login': typeof LoginRoute
   '/(authenticated)/cart': typeof authenticatedCartRoute
-  '/(authenticated)/products': typeof authenticatedProductsRoute
+  '/(authenticated)/products': typeof authenticatedProductsRouteWithChildren
   '/(authenticated)/profile': typeof authenticatedProfileRoute
+  '/(authenticated)/products/$id': typeof authenticatedProductsIdRoute
+  '/(authenticated)/products/': typeof authenticatedProductsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/login' | '/cart' | '/products' | '/profile'
+  fullPaths:
+    | '/'
+    | '/login'
+    | '/cart'
+    | '/products'
+    | '/profile'
+    | '/products/$id'
+    | '/products/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/login' | '/cart' | '/products' | '/profile'
+  to: '/' | '/login' | '/cart' | '/profile' | '/products/$id' | '/products'
   id:
     | '__root__'
     | '/'
@@ -82,6 +107,8 @@ export interface FileRouteTypes {
     | '/(authenticated)/cart'
     | '/(authenticated)/products'
     | '/(authenticated)/profile'
+    | '/(authenticated)/products/$id'
+    | '/(authenticated)/products/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -134,18 +161,47 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof authenticatedCartRouteImport
       parentRoute: typeof authenticatedRouteRoute
     }
+    '/(authenticated)/products/': {
+      id: '/(authenticated)/products/'
+      path: '/'
+      fullPath: '/products/'
+      preLoaderRoute: typeof authenticatedProductsIndexRouteImport
+      parentRoute: typeof authenticatedProductsRoute
+    }
+    '/(authenticated)/products/$id': {
+      id: '/(authenticated)/products/$id'
+      path: '/$id'
+      fullPath: '/products/$id'
+      preLoaderRoute: typeof authenticatedProductsIdRouteImport
+      parentRoute: typeof authenticatedProductsRoute
+    }
   }
 }
 
+interface authenticatedProductsRouteChildren {
+  authenticatedProductsIdRoute: typeof authenticatedProductsIdRoute
+  authenticatedProductsIndexRoute: typeof authenticatedProductsIndexRoute
+}
+
+const authenticatedProductsRouteChildren: authenticatedProductsRouteChildren = {
+  authenticatedProductsIdRoute: authenticatedProductsIdRoute,
+  authenticatedProductsIndexRoute: authenticatedProductsIndexRoute,
+}
+
+const authenticatedProductsRouteWithChildren =
+  authenticatedProductsRoute._addFileChildren(
+    authenticatedProductsRouteChildren,
+  )
+
 interface authenticatedRouteRouteChildren {
   authenticatedCartRoute: typeof authenticatedCartRoute
-  authenticatedProductsRoute: typeof authenticatedProductsRoute
+  authenticatedProductsRoute: typeof authenticatedProductsRouteWithChildren
   authenticatedProfileRoute: typeof authenticatedProfileRoute
 }
 
 const authenticatedRouteRouteChildren: authenticatedRouteRouteChildren = {
   authenticatedCartRoute: authenticatedCartRoute,
-  authenticatedProductsRoute: authenticatedProductsRoute,
+  authenticatedProductsRoute: authenticatedProductsRouteWithChildren,
   authenticatedProfileRoute: authenticatedProfileRoute,
 }
 

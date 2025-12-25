@@ -1,8 +1,8 @@
 import { useState } from "react";
+import { useNavigate } from "@tanstack/react-router";
 import { useProducts } from "../../../hooks/useProducts";
 import { useCart } from "../../../hooks/useCart";
 import Button from "../../ui/Button";
-import ProductDetails from "./ProductDetails";
 import type { Product } from "../../../stores/types/product";
 import { useTranslation } from "../../../hooks/useTranslation";
 
@@ -13,11 +13,11 @@ type ProductCardProps = {
 
 export default function ProductCard({ product, onEdit }: ProductCardProps) {
   const { t } = useTranslation();
+  const navigate = useNavigate();
   const { deleteProduct } = useProducts();
   const { addToCart } = useCart();
   const [isDeleting, setIsDeleting] = useState(false);
   const [isAdding, setIsAdding] = useState(false);
-  const [showDetails, setShowDetails] = useState(false);
 
   const handleDelete = async () => {
     const confirmMessage = t.products?.deleteConfirm?.replace("{0}", product.title) ||
@@ -35,23 +35,29 @@ export default function ProductCard({ product, onEdit }: ProductCardProps) {
     setTimeout(() => setIsAdding(false), 500);
   };
 
+  const handleViewDetails = () => {
+    navigate({ to: `/products/${product.id}` });
+  };
+
   return (
-    <>
-      {showDetails && (
-        <ProductDetails product={product} onClose={() => setShowDetails(false)} />
-      )}
-      <div
-        className="rounded-2xl backdrop-blur-xl border transition-all duration-300 overflow-hidden hover:scale-105 bg-white/80 border-gray-200/50 shadow-xl shadow-blue-500/10 dark:bg-gray-800/50 dark:border-gray-700/50 dark:shadow-purple-500/10"
-      >
+    <div
+      className="rounded-2xl backdrop-blur-xl border transition-all duration-300 overflow-hidden hover:scale-105 bg-white/80 border-gray-200/50 shadow-xl shadow-blue-500/10 dark:bg-gray-800/50 dark:border-gray-700/50 dark:shadow-purple-500/10"
+    >
       <div
         className="relative h-48 bg-gray-200 dark:bg-gray-700 cursor-pointer"
-        onClick={() => setShowDetails(true)}
+        onClick={handleViewDetails}
       >
-        <img
-          src={product.thumbnail}
-          alt={product.title}
-          className="w-full h-full object-cover"
-        />
+        {product.thumbnail ? (
+          <img
+            src={product.thumbnail}
+            alt={product.title}
+            className="w-full h-full object-cover"
+          />
+        ) : (
+          <div className="w-full h-full flex items-center justify-center text-gray-400">
+            No Image
+          </div>
+        )}
         <div
           className="absolute top-2 right-2 px-3 py-1 rounded-full text-xs font-semibold bg-blue-500/90 text-white dark:bg-purple-500/90"
         >
@@ -115,6 +121,5 @@ export default function ProductCard({ product, onEdit }: ProductCardProps) {
         </div>
       </div>
     </div>
-    </>
   );
 }
